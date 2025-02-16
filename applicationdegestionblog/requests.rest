@@ -16,7 +16,7 @@ POST http://localhost:8080/users
 content-type: application/json
 
 {
-    "username": "khaoula",
+    "username": "soufiane",
     "email": "elmajni@gmail.com",
     "password": "VFDX3456",
     "role": "admin"
@@ -28,7 +28,7 @@ POST http://localhost:8080/users/login
 content-type: application/json
 
 {
-    "email": "elmajnikhaoula99@gmail.com",
+    "email": "soufiane633@gmail.com",
     "password": "azerty"
 }
  
@@ -39,8 +39,8 @@ PUT http://localhost:8080/users/12
 content-type: application/json
 
 {
-    "username": "elmajni",
-    "email": "elmajnii@gmail.com",
+    "username": "mohamed",
+    "email": "mohamed@gmail.com",
     "password": "VFDX3456",
     "role": "admin"
 }
@@ -87,7 +87,7 @@ content-type: application/json
 
 {
     "title": "ok",
-    "content": "elmajni khaoula khaoula khaoula khaoula",
+    "content": "your content",
     "published": 1,
     "userid" : 10
 }
@@ -107,7 +107,7 @@ content-type: application/json
 
 {
     "title": "yos",
-    "content": "khaoula khaoula khaoula khaoula ok",
+    "content": "its oks",
     "published": 0,
     "userId" : 10
 }
@@ -154,7 +154,7 @@ PUT http://localhost:8080/comments/10
 content-type: application/json
 
 {
-    "content": "khaokkkula khaoula khaoula khaoula elmajni",
+    "content": "request",
     "ArticleId": 1
 }
 
@@ -187,7 +187,7 @@ PUT http://localhost:8080/tags/10
 content-type: application/json
 
 {
-   "name": "ok khaoula khaoula elmajni"
+   "name": "request"
 }
 
 ###
@@ -201,7 +201,7 @@ POST http://localhost:8080/users/login
 content-type: application/json
 
 {
-  "email": "Virgie_Konopelski@hotmail.com",
+  "email": "test@hotmail.com",
   "password": "FpYJLPurNEfK"
 }
 
