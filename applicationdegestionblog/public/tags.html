@@ -1,0 +1,296 @@
+<html>
+
+<head>
+  <title>Khaoula Elmajni's Blog API</title>
+  <link rel="stylesheet" href="/stylesheets/style.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+ 
+</head>
+
+<body>
+  
+<button type="button" class="btn btn-primary" onclick="logout()">Se déconnecter</button>
+<button type="button" class="btn btn-primary" onclick="users()">Gérer les utilisateurs</button>
+<button type="button" class="btn btn-primary" onclick="articles()">Gérer les articles</button>
+<button type="button" class="btn btn-primary" onclick="comments()">Gérer les Commentaires</button>
+<br><br>
+<form>
+    <fieldset>
+      <legend id="legend"><i class="fas fa-tags"></i>Ajouter un Tag</legend>
+    <div class="form-group">
+      <label for="exampleInputEmail1">Le nom du tag</label>
+      <input type="text" class="form-control" value="" id="nom" aria-describedby="emailHelp" required placeholder="Entrer le nom du tag">
+      <small id="emailHelp" class="form-text text-muted">Obligatoire.</small>
+    </div>
+   
+    <button type="submit" id="ajouter" class="btn btn-primary" onclick="addTag()"><i class="fas fa-plus"></i>  Ajouter</button>
+    <button type="submit" id="modifier" class="btn btn-primary"><i class="fas fa-pencil-alt"></i> Modifier</button>
+    </fieldset>
+  </form>
+
+
+  <table class="table table-sm">
+    <thead>
+      <tr>
+        <th id="id" scope="col"><i class="fas fa-id-card-alt"></i>id</th>
+        <th id="nom" scope="col"><i class="fas fa-spell-check"></i> nom</th>
+        <th id="createdAt" scope="col"><i class="fas fa-calendar-plus"></i> createdAt</th>
+        <th id="updatedAt " scope="col"><i class="fas fa-edit"></i> updatedAt</th>
+        <th id="action" scope="col"><i class="fas fa-tools"></i> action</th>
+      </tr>
+    </thead>
+    <tbody id="tags">
+      
+    </tbody>
+
+  </table>
+
+  
+  <button id="previous" class="btn btn-primary" onclick="getPreviousFiveElt()"><i class="fa fa-arrow-left" aria-hidden="true"></i> Précédent</button>
+  <button id="next" class="btn btn-primary" onclick="getNextFiveElt()">Next <i class="fa fa-arrow-right" aria-hidden="true"></i></button><br>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+       integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+       crossorigin="anonymous">
+  </script>
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+
+
+      <script>
+
+         var totalTagsCount = 0;
+         var nbr = 0;
+
+         //fonction d'ajout d'un utilisateur
+         function addTag(){
+          let nom = document.getElementById("nom").value;
+          var data = {
+            name : nom
+          };
+          let body  = JSON.stringify(data);
+         
+          fetch('/tags', {
+              method: 'POST',
+              body: body,
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+getCookie("jwt")
+              }
+            }).then(function (response) {
+                return response.json();
+            }).then(function (data){
+                    nbr = 0;
+                    getListOfTags(nbr);
+                    console.log(data);
+                    
+            });
+        } 
+
+        function sendPutRequest(id){
+          let nom = document.getElementById("nom").value;
+              
+          var data = {
+            name : nom
+          };
+          let body  = JSON.stringify(data);
+         
+          fetch('/tags/'+id, {
+              method: 'PUT',
+              body: body,
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              }
+            }).then(function (response) {
+                return response.json();
+            }).then(function (data){
+             
+              if(data.status === 200){
+              document.getElementById("ajouter").style.display = "block";
+              document.getElementById("modifier").style.display = "none";
+              swal.fire("le tag a été modifié");
+              nbr = 0;
+              
+              getNextFiveElt(nbr);
+              
+              }
+
+            });
+        }
+        
+         //fonction de modification d'un utilisateur
+         function updateTag(id){
+          fetch('/tags/'+id, {
+              method: 'GET'
+            }).then(function (response) {
+                return response.json();
+            }).then(function (data){
+              let nom = document.getElementById("nom");
+
+              if(data.status === 200){
+              document.getElementById("ajouter").style.display = "none";
+              document.getElementById("modifier").style.display = "block";
+              document.getElementById("modifier").setAttribute('onclick','sendPutRequest('+id+');');
+              nom.value = data.content.name;
+             
+              swal.fire("Vous etes en train de modifier le tag "+nom.value);
+              }
+            });
+         }
+
+         //fonction de suppression d'un utilisateur
+         function deleteTag(id){
+          Swal.fire({
+            title: 'Voulez-vous vraiment supprimé ce tag ?',
+            showDenyButton: true,
+            showCancelButton: false,
+            confirmButtonText: `Supprimer`,
+            denyButtonText: `Non`,
+          }).then((result) => {
+
+            if (result.isConfirmed) {
+              fetch('/tags/'+id, {
+              method: 'DELETE'
+            }).then(function (response) {
+                return response.json();
+             
+            }).then(function (data){
+              console.log(data);
+                    Swal.fire("Supprimé!", "le tag est supprimé.", "success");
+                    nbr = 0;
+                    getListOfTags(nbr);
+            });
+              
+            } else if (result.isDenied) {
+              Swal.fire('le tag n\'est pas supprimé', '', 'info')
+            }
+          })
+          
+        }
+
+        function getList(){
+          let list = document.getElementById("tags")
+          }
+        function getListOfTags(offset) {
+            fetch('/tags/offset/'+offset+'/limit/'+5, {
+              method: 'GET'
+            }).then(function (response) {
+                return response.json();
+            }).then(function (data){
+                var tr;
+                $('#tags').html('');
+                for (var i = 0; i < data.length; i++) {
+                    tr = $('<tr/>');
+                    tr.append("<td>" + data[i].id + "</td>");
+                    tr.append("<td>" + data[i].name + "</td>");
+                    tr.append("<td>" + data[i].createdAt + "</td>");
+                    tr.append("<td>" + data[i].updatedAt + "</td>");
+                    tr.append("<td><button style='margin-right: 8px' class=\"btn btn-success btn-round\" onclick=\"updateTag("+data[i].id+")\" type=\"button\"><i class=\"fas fa-pen\"></i></button><button class=\"btn btn-danger btn-round\" onclick=\"deleteTag("+data[i].id+")\" type=\"button\"><i class=\"fas fa-trash\"></i></button></td>")
+                    $('#tags').append(tr);
+                }
+            });
+          }
+
+          function getNextFiveElt(){
+            document.getElementById("previous").disabled = false;
+            if(nbr < totalTagsCount){
+              getListOfTags(nbr);
+              nbr+=5;
+            }
+            else{
+              document.getElementById("next").disabled = true;           
+            }
+            console.log(nbr);
+          }
+
+          function getPreviousFiveElt(){
+            if(nbr>0){
+              nbr-=5;
+              getListOfTags(nbr);
+            }
+            if(document.getElementById("next").disabled)
+              document.getElementById("next").disabled = false;  
+            if(nbr == 0)
+              document.getElementById("previous").disabled = true;
+            console.log(nbr);
+          }
+            
+
+          function getTotalTagsCount() {
+            fetch('/tags?tagsNbr', {
+              method: 'GET'
+            }).then(function (response) {
+                return response.json();
+            }).then(function (data) {
+              totalTagsCount = parseInt(data.message);
+              console.log(totalTagsCount);
+              getNextFiveElt();
+              document.getElementById("previous").disabled = true;
+            });
+            
+          }
+
+       </script>
+
+       <script>
+        getTotalTagsCount();
+//fct pour logout ==> supprimer la cookie        
+function logout() {
+    eraseCookie("jwt");
+    location.href="login.html";
+}
+
+function articles() {
+    
+    location.href="articles.html";
+}
+function users() {
+    
+    location.href="index.html";
+}
+function comments() {
+    
+    location.href="comments.html";
+}
+
+    let token = getCookie("jwt");
+    if (token === undefined) {
+      location.href = "login.html";
+    }
+
+
+    function setCookie(name, value) {
+      var expires = "";
+      if (15) {
+        var date = new Date();
+        date.setTime(date.getTime() + (15 * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toUTCString();
+      }
+      document.cookie = name + "=" + (value || "") + expires + "; path=/";
+    }
+
+    function getCookie(name) {
+      var nameEQ = name + "=";
+      var ca = document.cookie.split(';');
+      for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+      }
+      return undefined;
+    }
+
+    function eraseCookie(name) {
+      document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    }
+  </script>
+
+
+
+
+</body>
+
+</html>
