@@ -1,0 +1,220 @@
+GET http://localhost:8080/users/7
+
+###
+GET http://localhost:8080/users
+
+###
+
+DELETE http://localhost:8080/users
+###
+
+DELETE http://localhost:8080/users/4
+
+###
+
+POST http://localhost:8080/users 
+content-type: application/json
+
+{
+    "username": "khaoula",
+    "email": "elmajni@gmail.com",
+    "password": "VFDX3456",
+    "role": "admin"
+}
+
+###
+
+POST http://localhost:8080/users/login 
+content-type: application/json
+
+{
+    "email": "elmajnikhaoula99@gmail.com",
+    "password": "azerty"
+}
+ 
+
+###
+
+PUT http://localhost:8080/users/12
+content-type: application/json
+
+{
+    "username": "elmajni",
+    "email": "elmajnii@gmail.com",
+    "password": "VFDX3456",
+    "role": "admin"
+}
+
+### Step over the first 8 users and take 2 users 
+GET http://localhost:8080/users/offset/8/limit/2
+
+
+
+### Get all admins
+GET http://localhost:8080/users/admins
+
+### Get all authors
+GET http://localhost:8080/users/authors
+
+### Get all guests
+GET http://localhost:8080/users/guests
+
+### Get user by email
+GET http://localhost:8080/users/email/Arman@gmail.com
+
+
+
+###
+GET http://localhost:8080/users/30
+###
+GET http://localhost:8080/users?usersNbr
+
+### Get article by userid
+GET http://localhost:8080/users/7/articles
+
+
+###
+GET http://localhost:8080/articles
+
+###
+GET http://localhost:8080/articles/1
+
+###
+GET http://localhost:8080/articles/7
+###
+POST http://localhost:8080/articles
+content-type: application/json
+
+{
+    "title": "ok",
+    "content": "elmajni khaoula khaoula khaoula khaoula",
+    "published": 1,
+    "userid" : 10
+}
+
+###
+
+DELETE http://localhost:8080/articles/12
+###
+
+DELETE http://localhost:8080/articles/19
+
+
+###
+
+PUT http://localhost:8080/articles/12
+content-type: application/json
+
+{
+    "title": "yos",
+    "content": "khaoula khaoula khaoula khaoula ok",
+    "published": 0,
+    "userId" : 10
+}
+
+### Step over the first 8 users and take 2 users 
+GET http://localhost:8080/articles/offset/8/limit/2
+
+
+### Get article by title
+GET http://localhost:8080/articles/title/khaoula
+
+###
+GET http://localhost:8080/articles?articlesNbr
+
+
+
+
+
+
+###
+http://localhost:8080/comments
+
+###
+GET http://localhost:8080/comments/offset/8/limit/2
+
+###
+GET http://localhost:8080/comments?commentsNbr
+
+###
+GET http://localhost:8080/comments/4
+
+###
+POST http://localhost:8080/comments
+content-type: application/json
+
+{
+    "content": "OK OK OK OK",
+    "ArticleId": 8
+}
+
+###
+
+PUT http://localhost:8080/comments/10
+content-type: application/json
+
+{
+    "content": "khaokkkula khaoula khaoula khaoula elmajni",
+    "ArticleId": 1
+}
+
+###
+
+DELETE http://localhost:8080/comments/11
+
+
+###
+GET http://localhost:8080/tags
+
+###
+GET http://localhost:8080/tags?tagsNbr
+
+
+###
+GET http://localhost:8080/tags/11
+
+###
+POST http://localhost:8080/tags
+content-type: application/json
+
+{
+    "name": "mama khaoula khaoula"
+}
+
+###
+
+PUT http://localhost:8080/tags/10
+content-type: application/json
+
+{
+   "name": "ok khaoula khaoula elmajni"
+}
+
+###
+GET http://localhost:8080/articles/6/comments
+
+###
+GET http://localhost:8080/comments
+
+###
+POST http://localhost:8080/users/login
+content-type: application/json
+
+{
+  "email": "Virgie_Konopelski@hotmail.com",
+  "password": "FpYJLPurNEfK"
+}
+
+
+### guest
+DELETE http://localhost:8080/articles/4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6eyJpZCI6MSwidXNlcm5hbWUiOiJSYW5kYWxsODgiLCJlbWFpbCI6Ik1hZGVsaW5lLkx1ZXR0Z2VuQHlhaG9vLmNvbSIsInBhc3N3b3JkIjoiOFBQTWFxZTBMNTBlIiwicm9sZSI6Imd1ZXN0IiwiY3JlYXRlZEF0IjoiMjAxOS0wMy0wNVQxNDoyNjo1Mi4wMDBaIiwidXBkYXRlZEF0IjoiMjAyMS0wMS0xM1QxNToyMDozMy4wMDBaIn0sInJvbGUiOiJndWVzdCIsImlhdCI6MTYyMzUzOTQ4Nn0.BIkKV0DtOC-WLevm7lQUvf7SmfTmfp3aQR0dvcfLPms
+
+### admin
+DELETE http://localhost:8080/articles/6
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6eyJpZCI6MiwidXNlcm5hbWUiOiJSb3hhbm5lODkiLCJlbWFpbCI6IkRhbGxhc19KYWNvYmk2QHlhaG9vLmNvbSIsInBhc3N3b3JkIjoiT2E2T0dzY053S0RWIiwicm9sZSI6ImFkbWluIiwiY3JlYXRlZEF0IjoiMjAxOC0xMi0yNFQwOTo1Mzo0Ni4wMDBaIiwidXBkYXRlZEF0IjoiMjAyMS0wMi0xOVQyMToyNjo0NS4wMDBaIn0sInJvbGUiOiJhZG1pbiIsImlhdCI6MTYyMzU0MDQ0NX0.bqYGCLBuIaeXNt6QJsrMwCxJeafFZQ2mMAdqKOBf2Ls
+
+
+### author
+DELETE http://localhost:8080/articles/5
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6eyJpZCI6MywidXNlcm5hbWUiOiJBbGVzc2FuZHJhMzkiLCJlbWFpbCI6IlZpcmdpZV9Lb25vcGVsc2tpQGhvdG1haWwuY29tIiwicGFzc3dvcmQiOiJGcFlKTFB1ck5FZksiLCJyb2xlIjoiYXV0aG9yIiwiY3JlYXRlZEF0IjoiMjAxOS0wNi0xMFQxMDoxNTozOS4wMDBaIiwidXBkYXRlZEF0IjoiMjAyMS0wNC0wNVQyMjoxODozNy4wMDBaIn0sInJvbGUiOiJhdXRob3IiLCJpYXQiOjE2MjM1NDE4Nzh9.liRjp4QPC47BxZz-bYtw14mKkYoA-VI4lY5GIcZFQOw
