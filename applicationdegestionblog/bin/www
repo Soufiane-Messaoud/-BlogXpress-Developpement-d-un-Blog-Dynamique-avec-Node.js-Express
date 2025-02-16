@@ -5,7 +5,7 @@
  */
 
 var app = require('../app');
-var debug = require('debug')('elmajni:server');
+var debug = require('debug')('souf:server');
 var http = require('http');
 
 /**
